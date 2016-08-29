@@ -34,8 +34,8 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
                     err ? reject(err) : resolve(item)
                 );
             }
-        )
-    },
+        );
+    }
 
     getWithParams(find:any): Promise<Q> {
         return new Promise<Q>(
