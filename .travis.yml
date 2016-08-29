@@ -3,6 +3,8 @@ node_js:
   - "6"
   - "node"
 
+services: mongodb
+
 install:
   - "npm install"
   - "npm install -g typings"
