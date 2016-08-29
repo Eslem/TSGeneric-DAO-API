@@ -1,0 +1,10 @@
+mode_modules
+src/**/*.js
+src/**/*.js.map
+test/**/*.js
+test/**/*.js.map
+node_modules
+obj
+.vs
+.vscode
+typings
