@@ -11,5 +11,5 @@ install:
   - "typings install"
 
 script:
-  - tsc
+  - gulp compile
   - mocha
