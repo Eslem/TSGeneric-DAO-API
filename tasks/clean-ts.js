@@ -2,9 +2,12 @@ import gulp from 'gulp';
 import clean from 'gulp-clean';
 
 let base = './src/'
+let tests = './test/'
 let files = [
   base+'**/*.js',
-  base+'**/*.map'
+  base+'**/*.map',
+  tests+'**/*.js',
+  tests+'**/*.map'
 ]
 
 gulp.task('clean', () => {

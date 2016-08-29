@@ -9,8 +9,6 @@
         "noImplicitAny": false
     },
     "exclude": [
-        "node_modules",
-        "typings"
-    ],
-    "files": ["typings/index.d.ts"]
+        "node_modules"
+    ]
 }
