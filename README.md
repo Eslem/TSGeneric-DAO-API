@@ -1,4 +1,5 @@
 # TSGeneric-DAO-API
+[![Build Status](https://travis-ci.org/Eslem/TSGeneric-DAO-API.svg?branch=master)](https://travis-ci.org/Eslem/TSGeneric-DAO-API)
 
 Generics Classes for DAO and API with Typescript (Mongoose, Express)
 

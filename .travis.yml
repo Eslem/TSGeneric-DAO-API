@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "6"
+  - "node"
+
+install:
+  - "npm install"
+  - "npm install -g typings"
+  - "typings install"
+
+script:
+  - tsc
+  - mocha
