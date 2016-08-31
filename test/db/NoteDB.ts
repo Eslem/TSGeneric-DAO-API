@@ -16,14 +16,8 @@ export class NoteDAOImplMongoose extends GenericDAOImplMongoose<Note, NoteDocume
         super(
             "Note",
             new mongoose.Schema({
-                title: {
-                  type: String,
-                  required:true
-                },
-                message: {
-                  type: String,
-                  required:true
-                }
+                title: String,
+                message: String
             })
         );
     }

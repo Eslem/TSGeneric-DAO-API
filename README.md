@@ -8,6 +8,8 @@ Generics Classes for DAO and API with Typescript (Mongoose, Express)
 - GenericDAO: DAO functions (CRUD).
 - GenericDAOImplMongoose: implementation of GenericDAO for Mongoose.
 
+- GenericAPI: Route for DAO functions (CRUD).
+- GenericDAOImplExpress: implementation of GenericAPI for Express.
 --------------------------------------------------------------------------------
 
 ### DAO
@@ -49,8 +51,30 @@ export class NoteDAOImplMongoose extends GenericDAOImplMongoose<Note, NoteDocume
     }
 }
 
+//API
+export class NoteApi extends GenericAPIImplExpress {
+    constructor() {
+        super(
+          'notes',//url /api/notes
+           new NoteDAOImplMongoose());
+    }
+}
+/****** Endpoints
+get      /api/notes      get all
+get      /api/notes/:id  get note with id
+post     /api/notes/     create note
+put      /api/notes/:id  update note with id
+delete   /api/notes/:id  delete note with id
+***/
 
-//***** Example :
+
+/***** Example :
+
+//Express app and router
+let noteApi = new NoteApi();
+noteApi.init(router);
+
+
 let NoteDAO = new NoteDAOImplMongoose();
 
 NoteDAO.create({
@@ -66,4 +90,6 @@ NoteDAO.create({
       //OnError
     }
 );
+
+***/
 ```

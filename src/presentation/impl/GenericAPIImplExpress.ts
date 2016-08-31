@@ -16,22 +16,22 @@ export abstract class GenericAPIImplExpress {
         this.moreRoutes(router);
     }
 
-    protected baseRoute(router:express.Router){
-      router.route('/api/' + this.route)
-          .get((req, res) => this.getAll(req, res))
-          .post((req, res) => this.create(req, res))
+    protected baseRoute(router: express.Router) {
+        router.route('/api/' + this.route)
+            .get((req, res) => this.getAll(req, res))
+            .post((req, res) => this.create(req, res))
     }
 
-    protected moreRoutes(router:express.Router){
-      
+    protected moreRoutes(router: express.Router) {
+
     }
 
-    protected idRoute(router:express.Router){
-      router
-          .route('/api/' + this.route + '/:id')
-          .get((req, res) => this.get(req, res))
-          .post((req, res) => this.update(req, res))
-          .delete((req, res) => this.delete(req, res));
+    protected idRoute(router: express.Router) {
+        router
+            .route('/api/' + this.route + '/:id')
+            .get((req, res) => this.get(req, res))
+            .post((req, res) => this.update(req, res))
+            .delete((req, res) => this.delete(req, res));
     }
 
     private onError(res: express.Response, error: any, status?: number) {
@@ -41,7 +41,11 @@ export abstract class GenericAPIImplExpress {
 
     get(req: express.Request, res: express.Response) {
         this._DAO.get(req.params.id).then(
-            obj => res.status(200).json(obj)
+            obj => {
+                if (!obj)
+                    return res.status(404).end();
+                res.status(200).json(obj);
+            }
         ).catch(err => this.onError(res, err));
     }
 
@@ -53,8 +57,6 @@ export abstract class GenericAPIImplExpress {
 
     create(req: express.Request, res: express.Response) {
         let obj = req.body;
-        console.log('post', obj);
-
         this._DAO.create(obj).then(
             result => res.status(201).json(result)
         ).catch(err => this.onError(res, err));
@@ -62,14 +64,22 @@ export abstract class GenericAPIImplExpress {
 
     update(req: express.Request, res: express.Response) {
         let obj = req.body;
-        this._DAO.update(obj).then(
-            result => res.status(201).json(result)
+        this._DAO.update(obj, req.params.id).then(
+            updated => {
+                if (!updated)
+                    return res.status(404).end();
+                res.status(200).json(updated);
+            }
         ).catch(err => this.onError(res, err));
     }
 
     delete(req: express.Request, res: express.Response) {
         this._DAO.delete(req.params.id).then(
-            obj => res.status(200).json(obj)
+            obj => {
+                if (!obj)
+                    return res.status(404).end();
+                res.status(200).json(obj);
+            }
         ).catch(err => this.onError(res, err));
     }
 }

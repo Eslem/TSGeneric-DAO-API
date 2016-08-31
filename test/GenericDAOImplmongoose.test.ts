@@ -4,14 +4,11 @@ import { setupMongoose }  from './common/db';
 import {  expect, assert } from 'chai';
 import { NoteDAO, _onError, createDefault, createMultiple} from './common/NoteDB';
 
-declare var describe, expect, it, afterEach, before, beforeEach;
+declare var describe, it, afterEach, before, beforeEach;
 
 
 
 describe('GenericDAO.Note', () => {
-    before(() => {
-        setupMongoose(mongoose);
-    });
 
     afterEach((done) => {
         NoteDAO.model.remove({}, () => done());

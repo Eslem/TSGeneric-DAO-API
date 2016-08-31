@@ -68,16 +68,17 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
         )
     }
 
-    update(obj: Q): Promise<T> {
+    update(obj: Q, id?:string): Promise<T> {
         return new Promise<T>(
             (resolve: Function, reject: Function) => {
               if (!_.isObject(obj))
                   return reject(new TypeError('DAO.update value passed is not object.'));
-              if (!obj._id)
+              if (!id && !obj._id)
                   return reject(new TypeError('DAO.update object passed doesn\'t have _id.'));
-                this.model.findById(obj._id).exec(
+                this.model.findById(id || obj._id).exec(
                     (err, found) => {
                         if (err) reject(err);
+                        if (!found) resolve(found);
                         let updated = _.merge(found, obj);
                         updated.save(
                             (err, updated) =>
@@ -96,7 +97,7 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
                 if (!_.isString(id) && !_.isObject(id))
                     return reject(new TypeError('DAO.delete id passed is not an string or object.'));
                 this.model.findByIdAndRemove(id).exec(
-                    (err, deleted) => err ? reject(err) : resolve()
+                    (err, deleted) => err ? reject(err) : resolve(deleted)
                 )
             }
         )

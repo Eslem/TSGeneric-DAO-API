@@ -1,16 +1,15 @@
-'use strict';
-
-var PORT = process.env.PORT || 3333;
+var PORT = process.env.PORT || 3334;
 
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
 import * as os from 'os';
 import * as http from 'http';
-import {Routes} from './presentation';
-import {DBConfig} from './persistence';
-export let app = express();
+import { setUpApi }  from './../common/NoteApi';
 
-Routes.init(app, express.Router());
-DBConfig.init();
+export let app = express();
+app.use(bodyParser.json());
+setUpApi(app, express.Router());
+
 http.createServer(app)
     .listen(PORT, () => {
         console.log(`up and running @: ${os.hostname()} on port: ${PORT}`);
