@@ -13,13 +13,17 @@ export abstract class GenericAPIImplExpress {
 
         this.baseRoute(router);
         this.idRoute(router);
-
+        this.moreRoutes(router);
     }
 
     protected baseRoute(router:express.Router){
       router.route('/api/' + this.route)
           .get((req, res) => this.getAll(req, res))
           .post((req, res) => this.create(req, res))
+    }
+
+    protected moreRoutes(router:express.Router){
+      
     }
 
     protected idRoute(router:express.Router){

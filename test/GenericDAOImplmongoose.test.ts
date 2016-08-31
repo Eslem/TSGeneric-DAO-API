@@ -2,42 +2,19 @@ import { GenericDAOImplMongoose } from './../src/persistence';
 import * as mongoose from 'mongoose';
 import { setupMongoose }  from './common/db';
 import {  expect, assert } from 'chai';
+import { NoteDAO, _onError, createDefault, createMultiple} from './common/NoteDB';
 
 declare var describe, expect, it, afterEach, before, beforeEach;
 
-export interface Note {
-    title: String;
-    message: String;
-}
-
-export interface NoteDocument extends Note, mongoose.Document {
-}
 
 
-export class NoteDAOImplMongoose extends GenericDAOImplMongoose<Note, NoteDocument>{
-    constructor() {
-        super(
-            "Note",
-            new mongoose.Schema({
-                title: String,
-                message: String
-            })
-        );
-    }
-}
-
-let _onError = (err) => {
-    assert.isOk(false, 'Error'+err);
-}
-
-let NoteDAO = new NoteDAOImplMongoose();
 describe('GenericDAO.Note', () => {
     before(() => {
         setupMongoose(mongoose);
     });
 
     afterEach((done) => {
-        NoteDAO._model.remove({}, () => done());
+        NoteDAO.model.remove({}, () => done());
     })
 
 
@@ -72,22 +49,17 @@ describe('GenericDAO.Note', () => {
 
 
     describe('GetID', (done) => {
-        let ID;
+        var ID = {_id:''};
         beforeEach((done) => {
-            NoteDAO.create({ title: 'Title', message: 'Nain' }).then(
-                note => {
-                    ID = note._id;
-                    done();
-                }
-            ).catch(_onError)
+            createDefault(done, ID)
         });
 
 
         it('should get an element with ID', (done) => {
-            NoteDAO.get(ID).then(
+            NoteDAO.get(ID._id).then(
                 note => {
                     expect(note).to.be.defined;
-                    expect(note).to.have.property('_id').and.to.eql(ID);
+                    expect(note).to.have.property('_id').and.to.eql(ID._id);
                     expect(note).to.have.property('title').and.to.equals('Title');
                     done();
                 }
@@ -107,13 +79,7 @@ describe('GenericDAO.Note', () => {
     });
 
     describe('Get with params', (done) => {
-        beforeEach((done) => {
-            NoteDAO.create({ title: 'Title', message: 'Nain' }).then(
-                note => {
-                    done();
-                }
-            ).catch(_onError)
-        });
+        beforeEach((done) => createDefault(done));
 
 
         it('should get an element with title \'Title\'', (done) => {
@@ -151,17 +117,7 @@ describe('GenericDAO.Note', () => {
     });
 
     describe('Get All', (done) => {
-        beforeEach((done) => {
-            NoteDAO.create({ title: 'Title', message: 'Nain' }).then(
-                note => {
-                    NoteDAO.create({ title: 'Title', message: 'Nain' }).then(
-                        note => {
-                            done();
-                        }
-                    ).catch(_onError)
-                }
-            ).catch(_onError)
-        });
+        beforeEach(createMultiple);
 
 
         it('Should get all elements (length = 2)', (done) => {
@@ -178,7 +134,7 @@ describe('GenericDAO.Note', () => {
         });
 
         it('should get an empty array if there are not elements', (done) => {
-            NoteDAO._model.remove({}, () => {
+            NoteDAO.model.remove({}, () => {
                 NoteDAO.getAll().then(
                     notes => {
                         expect(notes).to.be.defined;
@@ -192,22 +148,17 @@ describe('GenericDAO.Note', () => {
     });
 
     describe('Delete by ID', (done) => {
-        let ID;
+        let ID = {_id:''};
         beforeEach((done) => {
-            NoteDAO.create({ title: 'Title', message: 'Nain' }).then(
-                note => {
-                    ID = note._id;
-                    done();
-                }
-            ).catch(_onError)
+            createDefault(done, ID)
         });
 
 
         it('should delete the element by ID', (done) => {
-            NoteDAO.delete(ID).then(
+            NoteDAO.delete(ID._id).then(
                 note => {
                     assert.isOk(true, 'Promise resolved');
-                    NoteDAO.get(ID).then(
+                    NoteDAO.get(ID._id).then(
                         note => {
                             assert.isNotOk(null, 'Should return null');
                             done();
@@ -230,14 +181,9 @@ describe('GenericDAO.Note', () => {
     });
 
     describe('Update by ID', (done) => {
-        let _note;
+        let _note = {title:'', text:''};
         beforeEach((done) => {
-            NoteDAO.create({ title: 'Title', message: 'Nain' }).then(
-                note => {
-                    _note = note;
-                    done();
-                }
-            ).catch(_onError)
+            createDefault(done, _note);
         });
 
 
