@@ -26,6 +26,7 @@ Generics Classes for DAO and API with Typescript (Mongoose, Express)
     delete(id:number|string):Promise<any>;
   }
 ```
+[Example Note](test/common/NoteDB.ts)
 
 ### API
 
@@ -44,6 +45,7 @@ abstract class GenericAPIImplExpress implements GenericAPI {
     this.moreRoutes(router);
   }
 ```
+[Example Note](test/common/NoteApi.ts)
 
 ### Implemetation
 
