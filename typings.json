@@ -4,7 +4,6 @@
     "body-parser": "registry:npm/body-parser#1.15.2+20160815132839",
     "es6-promise": "registry:npm/es6-promise#3.0.0+20160723033700",
     "express": "registry:npm/express#4.14.0+20160815112707",
-    "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160322035842",
     "mongoose": "registry:npm/mongoose#4.3.5+20160628072220"
   },
   "globalDependencies": {

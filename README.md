@@ -1,4 +1,5 @@
 # TSGeneric-DAO-API
+
 [![Build Status](https://travis-ci.org/Eslem/TSGeneric-DAO-API.svg?branch=master)](https://travis-ci.org/Eslem/TSGeneric-DAO-API)
 
 Generics Classes for DAO and API with Typescript (Mongoose, Express)
@@ -9,7 +10,9 @@ Generics Classes for DAO and API with Typescript (Mongoose, Express)
 - GenericDAOImplMongoose: implementation of GenericDAO for Mongoose.
 
 - GenericAPI: Route for DAO functions (CRUD).
+
 - GenericDAOImplExpress: implementation of GenericAPI for Express.
+
 --------------------------------------------------------------------------------
 
 ### DAO
@@ -24,11 +27,29 @@ Generics Classes for DAO and API with Typescript (Mongoose, Express)
   }
 ```
 
+### API
+
+```typescript
+interface GenericAPI {
+  DAO:GenericDAO<any>; // DAO to use
+  route:String; //route name
+}
+
+abstract class GenericAPIImplExpress implements GenericAPI {
+  constructor(protected route: String, public DAO: GenericDAO<any>) { }
+
+  init(router: express.Router) {
+    this.baseRoute(router);
+    this.idRoute(router);
+    this.moreRoutes(router);
+  }
+```
+
 ### Implemetation
 
 ```typescript
 
-//POJO
+//Interface for model
 export interface Note {
     title: String;
     message: String;
@@ -68,7 +89,7 @@ delete   /api/notes/:id  delete note with id
 ***/
 
 
-/***** Example :
+//// Example :
 
 //Express app and router
 let noteApi = new NoteApi();
@@ -91,5 +112,4 @@ NoteDAO.create({
     }
 );
 
-***/
 ```

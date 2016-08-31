@@ -3,9 +3,9 @@ import * as express from 'express';
 import { GenericDAO } from './../../persistence';
 
 
-export abstract class GenericAPIImplExpress {
+export abstract class GenericAPIImplExpress implements GenericAPI {
 
-    constructor(protected route: String, protected _DAO: GenericDAO<any>) {
+    constructor(protected route: String, public DAO: GenericDAO<any>) {
     }
 
     init(router: express.Router) {
@@ -40,7 +40,7 @@ export abstract class GenericAPIImplExpress {
 
 
     get(req: express.Request, res: express.Response) {
-        this._DAO.get(req.params.id).then(
+        this.DAO.get(req.params.id).then(
             obj => {
                 if (!obj)
                     return res.status(404).end();
@@ -50,21 +50,21 @@ export abstract class GenericAPIImplExpress {
     }
 
     getAll(req: express.Request, res: express.Response) {
-        this._DAO.getAll().then(
+        this.DAO.getAll().then(
             objs => res.status(200).json(objs)
         ).catch(err => this.onError(res, err));
     }
 
     create(req: express.Request, res: express.Response) {
         let obj = req.body;
-        this._DAO.create(obj).then(
+        this.DAO.create(obj).then(
             result => res.status(201).json(result)
         ).catch(err => this.onError(res, err));
     }
 
     update(req: express.Request, res: express.Response) {
         let obj = req.body;
-        this._DAO.update(obj, req.params.id).then(
+        this.DAO.update(obj, req.params.id).then(
             updated => {
                 if (!updated)
                     return res.status(404).end();
@@ -74,7 +74,7 @@ export abstract class GenericAPIImplExpress {
     }
 
     delete(req: express.Request, res: express.Response) {
-        this._DAO.delete(req.params.id).then(
+        this.DAO.delete(req.params.id).then(
             obj => {
                 if (!obj)
                     return res.status(404).end();
