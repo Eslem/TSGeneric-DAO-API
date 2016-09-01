@@ -1,34 +1,35 @@
 {
-  "name": "tsgeneric-dao-api",
-  "version": "0.0.1",
-  "description": "Generic DAO and Api NodeJs, Express, Mongoose",
-  "main": "src/index.ts",
-  "scripts": {
-    "test": "mocha",
-    "dev": "tsc --watch"
-  },
-  "author": "Eslem",
-  "license": "ISC",
-  "dependencies": {
-    "es6-promise": "^3.2.1",
-    "express": "^4.14.0",
-    "mongoose": "^4.4.7"
-  },
-  "devDependencies": {
-    "method-override": "^2.3.6",
-    "body-parser": "^1.15.2",
-    "express-jwt": "^3.4.0",
-    "babel-core": "^6.14.0",
-    "babel-preset-es2015": "^6.14.0",
-    "chai": "^3.5.0",
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-typescript": "^2.13.6",
-    "mocha": "^3.0.2",
-    "request": "^2.74.0",
-    "require-dir": "^0.3.0",
-    "should": "^11.1.0",
-    "supertest": "^2.0.0",
-    "typescript": "^1.8.10"
-  }
+    "name": "tsgeneric-dao-api",
+    "version": "0.0.1",
+    "description": "Generic DAO and Api NodeJs, Express, Mongoose",
+    "main": "src/index.ts",
+    "scripts": {
+        "test": "mocha",
+        "dev": "tsc --watch"
+    },
+    "author": "Eslem",
+    "license": "ISC",
+    "dependencies": {
+        "es6-promise": "^3.2.1",
+        "express": "^4.14.0",
+        "mongoose": "^4.4.7"
+    },
+    "typings": "./src/index.d.ts",
+    "devDependencies": {
+        "method-override": "^2.3.6",
+        "body-parser": "^1.15.2",
+        "express-jwt": "^3.4.0",
+        "babel-core": "^6.14.0",
+        "babel-preset-es2015": "^6.14.0",
+        "chai": "^3.5.0",
+        "gulp": "^3.9.1",
+        "gulp-clean": "^0.3.2",
+        "gulp-typescript": "^2.13.6",
+        "mocha": "^3.0.2",
+        "request": "^2.74.0",
+        "require-dir": "^0.3.0",
+        "should": "^11.1.0",
+        "supertest": "^2.0.0",
+        "typescript": "^1.8.10"
+    }
 }

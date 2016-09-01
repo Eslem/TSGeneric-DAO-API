@@ -5,7 +5,7 @@ import { GenericDAO } from './../../persistence';
 
 export abstract class GenericAPIImplExpress implements GenericAPI {
 
-    constructor(protected route: String, public DAO: GenericDAO<any>) {
+    constructor(public route: String, public DAO: GenericDAO<any>) {
     }
 
     init(router: express.Router) {
