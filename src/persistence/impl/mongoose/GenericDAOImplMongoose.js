@@ -1,12 +1,17 @@
 var mongoose = require('mongoose');
 var _ = require('lodash');
 var BPromise = require('bluebird');
+mongoose.Promise = global.Promise;
 var GenericDAOImplMongoose = (function () {
-    function GenericDAOImplMongoose(_modelName, _modelSchema) {
+    function GenericDAOImplMongoose(_modelName, _modelSchema, connection) {
         this._modelName = _modelName;
         this._modelSchema = _modelSchema;
+        this.connection = connection;
         if (!this.constructor['created']) {
-            this.constructor['_model'] = mongoose.model(_modelName, _modelSchema);
+            if (connection)
+                this.constructor['_model'] = connection.model(_modelName, _modelSchema);
+            else
+                this.constructor['_model'] = mongoose.model(_modelName, _modelSchema);
             this.constructor['created'] = true;
         }
         this.model = this.constructor['_model'];

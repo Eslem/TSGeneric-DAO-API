@@ -4,14 +4,18 @@ import {Model, Document, Schema} from 'mongoose';
 import {GenericDAO} from './../../GenericDAO';
 import * as BPromise from 'bluebird';
 
-export abstract class GenericDAOImplMongoose<T, Q extends Document> implements GenericDAO<T> {
+mongoose.Promise = global.Promise;
+export abstract class GenericDAOImplMongoose<T, Q extends mongoose.Document> implements GenericDAO<T> {
     static _model;
     public model;
     static created = false;
 
-    constructor(protected _modelName: string, protected _modelSchema) {
+    constructor(protected _modelName: string, protected _modelSchema, private connection?:mongoose.Mongoose) {
         if (!this.constructor['created']) {
-            this.constructor['_model'] = mongoose.model<Q>(_modelName, _modelSchema);
+            if (connection)
+                this.constructor['_model'] = connection.model<Q>(_modelName, _modelSchema);
+            else
+                this.constructor['_model'] = mongoose.model<Q>(_modelName, _modelSchema);
             this.constructor['created'] = true;
         }
 
@@ -24,9 +28,9 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
                 if (!_.isObject(obj))
                     return reject(new TypeError('DAO.create value passed is not a valid object.'));
                 let modeled = new this.model(obj);
-                modeled.save(
-                    (err, saved: T) =>
-                        err ? reject(err) : resolve(saved)
+                    modeled.save(
+                        (err, saved: T) =>
+                            err ? reject(err) : resolve(saved)
                     );
             }
         )

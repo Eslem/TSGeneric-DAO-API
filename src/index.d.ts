@@ -1,5 +1,6 @@
 import * as BPromise from 'bluebird';
 import * as mongoose from 'mongoose';
+import * as express from 'express';
 import * as _ from 'lodash';
 
 declare module 'tsgeneric-dao-api' {
@@ -22,11 +23,11 @@ declare module 'tsgeneric-dao-api' {
         route: String;
     }
 
-    export abstract class GenericDAOImplMongoose<T, Q extends Document> implements GenericDAO<T> {
+    export abstract class GenericDAOImplMongoose<T, Q extends mongoose.Document> implements GenericDAO<T> {
         static _model;
         public model;
         static created;
-        constructor(_modelName: string, _modelSchema);
+        constructor(_modelName: string, _modelSchema, connection?:mongoose.Mongoose);
         create(obj: T): BPromise<T>;
         get(id: string): BPromise<Q>;
         getWithParams(find: any): BPromise<Q>;

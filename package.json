@@ -1,6 +1,6 @@
 {
   "name": "tsgeneric-dao-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generic DAO and Api NodeJs, Express, Mongoose",
   "main": "src/index.js",
   "scripts": {

@@ -1,9 +1,9 @@
-import * as Promise from 'bluebird';
+import * as BPromise from 'bluebird';
 
 export interface GenericDAO <T>{
-  create(model:T):Promise<T>;
-  get(id:number|string): Promise<T|any>;
-  getAll():Promise<[T]>;
-  update(model:any):Promise<T>;
-  delete(id:number|string):Promise<any>;
+  create(model:T):BPromise<T>;
+  get(id:number|string): BPromise<T|any>;
+  getAll():BPromise<[T]>;
+  update(model:any):BPromise<T>;
+  delete(id:number|string):BPromise<any>;
 }
