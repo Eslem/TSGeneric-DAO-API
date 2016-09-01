@@ -27,6 +27,7 @@ describe('GenericDAO.Note', () => {
                     expect(note).to.have.property('message').and.to.equal('This is a message');
                     expect(note).to.have.property('_id');
                     done();
+                    return;
                 })
                 .catch(_onError);
         })
@@ -35,6 +36,7 @@ describe('GenericDAO.Note', () => {
             NoteDAO.create(undefined).then(
                 note => {
                     expect(true).to.be.false;
+                    return note;
                 }
             )
                 .catch(err => {

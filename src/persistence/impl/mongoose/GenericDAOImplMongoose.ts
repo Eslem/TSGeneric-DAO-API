@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose';
-import * as Promise from 'bluebird';
 import * as _ from 'lodash';
 import {Model, Document, Schema} from 'mongoose';
 import {GenericDAO} from './../../GenericDAO';
+import * as BPromise from 'bluebird';
 
 export abstract class GenericDAOImplMongoose<T, Q extends Document> implements GenericDAO<T> {
     static _model;
@@ -10,42 +10,43 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
     static created = false;
 
     constructor(protected _modelName: string, protected _modelSchema) {
-      if(!this.constructor['created']){
-        this.constructor['_model'] = mongoose.model<Q>(_modelName, _modelSchema);
-        this.constructor['created'] = true;
-      }
+        if (!this.constructor['created']) {
+            this.constructor['_model'] = mongoose.model<Q>(_modelName, _modelSchema);
+            this.constructor['created'] = true;
+        }
 
-      this.model = this.constructor['_model'];
+        this.model = this.constructor['_model'];
     }
 
-    create(obj: T): Promise<T> {
-        return new Promise<T>(
+    create(obj: T): BPromise<T> {
+        return new BPromise<T>(
             (resolve: Function, reject: Function) => {
                 if (!_.isObject(obj))
                     return reject(new TypeError('DAO.create value passed is not a valid object.'));
                 let modeled = new this.model(obj);
                 modeled.save(
                     (err, saved: T) =>
-                        err ? reject(err) : resolve(saved));
+                        err ? reject(err) : resolve(saved)
+                    );
             }
         )
     }
 
-    get(id: string): Promise<Q> {
-        return new Promise<Q>(
+    get(id: string): BPromise<Q> {
+        return new BPromise<Q>(
             (resolve: Function, reject: Function) => {
                 if (!_.isString(id) && !_.isObject(id))
                     return reject(new TypeError('DAO.get id passed is not an string or object.'));
 
-                this.model.findById(id).exec((err, item: T) =>
+                return this.model.findById(id).exec((err, item: T) =>
                     err ? reject(err) : resolve(item)
                 );
             }
         );
     }
 
-    getWithParams(find:any): Promise<Q> {
-        return new Promise<Q>(
+    getWithParams(find: any): BPromise<Q> {
+        return new BPromise<Q>(
             (resolve: Function, reject: Function) => {
                 if (!_.isObject(find))
                     return reject(new TypeError('DAO.getParams params passed is not an object.'));
@@ -58,8 +59,8 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
     }
 
 
-    getAll(): Promise<[T]> {
-        return new Promise<[T]>(
+    getAll(): BPromise<[T]> {
+        return new BPromise<[T]>(
             (resolve: Function, reject: Function) => {
                 this.model.find({}).exec(
                     (err, items) => err ? reject(err) : resolve(items)
@@ -68,13 +69,13 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
         )
     }
 
-    update(obj: Q, id?:string): Promise<T> {
-        return new Promise<T>(
+    update(obj: Q, id?: string): BPromise<T> {
+        return new BPromise<T>(
             (resolve: Function, reject: Function) => {
-              if (!_.isObject(obj))
-                  return reject(new TypeError('DAO.update value passed is not object.'));
-              if (!id && !obj._id)
-                  return reject(new TypeError('DAO.update object passed doesn\'t have _id.'));
+                if (!_.isObject(obj))
+                    return reject(new TypeError('DAO.update value passed is not object.'));
+                if (!id && !obj._id)
+                    return reject(new TypeError('DAO.update object passed doesn\'t have _id.'));
                 this.model.findById(id || obj._id).exec(
                     (err, found) => {
                         if (err) reject(err);
@@ -91,8 +92,8 @@ export abstract class GenericDAOImplMongoose<T, Q extends Document> implements G
     }
 
 
-    delete(id): Promise<any> {
-        return new Promise(
+    delete(id): BPromise<any> {
+        return new BPromise(
             (resolve: Function, reject: Function) => {
                 if (!_.isString(id) && !_.isObject(id))
                     return reject(new TypeError('DAO.delete id passed is not an string or object.'));

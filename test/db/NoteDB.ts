@@ -24,7 +24,7 @@ export class NoteDAOImplMongoose extends GenericDAOImplMongoose<Note, NoteDocume
 }
 
 export let _onError = (err) => {
-    assert.isOk(false, 'Error' + err);
+    return assert.isOk(false, 'Error' + err);
 }
 export let NoteDAO = new NoteDAOImplMongoose();
 
@@ -35,6 +35,7 @@ export let createDefault = (done, ID?) => {
             if (ID)
                 ID._id = note._id;
             done();
+            return null;
         }
     ).catch(_onError)
 }

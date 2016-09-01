@@ -1,15 +1,15 @@
-import * as Promise from 'bluebird';
+import * as BPromise from 'bluebird';
 import * as mongoose from 'mongoose';
 import * as _ from 'lodash';
 
 declare module 'tsgeneric-dao-api' {
 
     export interface GenericDAO<T> {
-        create(model: T): Promise<T>;
-        get(id: number | string): Promise<T | any>;
-        getAll(): Promise<[T]>;
-        update(model: any): Promise<T>;
-        delete(id: number | string): Promise<any>;
+        create(model: T): BPromise<T>;
+        get(id: number | string): BPromise<T | any>;
+        getAll(): BPromise<[T]>;
+        update(model: any): BPromise<T>;
+        delete(id: number | string): BPromise<any>;
     }
 
 
@@ -27,12 +27,12 @@ declare module 'tsgeneric-dao-api' {
         public model;
         static created;
         constructor(_modelName: string, _modelSchema);
-        create(obj: T): Promise<T>;
-        get(id: string): Promise<Q>;
-        getWithParams(find: any): Promise<Q>;
-        getAll(): Promise<[T]>;
-        update(obj: Q, id?: string): Promise<T>;
-        delete(id): Promise<any>;
+        create(obj: T): BPromise<T>;
+        get(id: string): BPromise<Q>;
+        getWithParams(find: any): BPromise<Q>;
+        getAll(): BPromise<[T]>;
+        update(obj: Q, id?: string): BPromise<T>;
+        delete(id): BPromise<any>;
     }
 
     export abstract class GenericAPIImplExpress implements GenericAPI {
